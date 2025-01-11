@@ -7,7 +7,7 @@
         </div>
         <div class="mt-8 w-full flex flex-row gap-x-4 pe-52">
             <input v-model="tempMessage" type="text" class="flex-auto border-2 border-gray-300 p-2 rounded-md focus:outline-gray-400" placeholder="Ask me anything!">
-            <button @click="sendMessage()" class="px-5 py-3 bg-purple-300 rounded-md w-fit">Hit me 👊🏻</button>
+            <button @click="sendMessage()" class="px-5 py-3 bg-purple-300 rounded-md w-fit">Ask Ocha</button>
         </div>
     </div>
 </template>
