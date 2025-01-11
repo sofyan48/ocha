@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.chat-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: #be9dcc;
+    border-radius: 10px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background: #352235;
+    border-radius: 50px;
+}
