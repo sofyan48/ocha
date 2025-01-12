@@ -1,8 +1,8 @@
 <template>
   <div
     class="relative w-full h-full overflow-y-auto scroll-smooth rounded-lg flex flex-col gap-y-5 py-8 md:px-7 px-2 text-white text-sm font-light bg-gradient-to-t from-gray-700 to-gray-500 md:h-[800px] justify-between">
-    <div class="chat-container flex flex-col gap-y-6 h-5/6 overflow-y-scroll p-4" ref="chatContainer">
-      <transition-group name="chat" tag="div" class="chat-container">
+    <div class="chat-container h-5/6 overflow-y-scroll p-4" ref="chatContainer">
+      <transition-group name="chat" tag="div" class="chat-container gap-y-6 flex flex-col">
         <div v-for="(chat, i) in chats" :key="i" class="flex flex-row gap-x-3"
           :class="chat.direction === 'out' ? 'justify-start' : 'justify-end'">
           <div class="h-fit w-fit text-base font-semibold rounded-full py-1 px-[0.4rem]"
@@ -13,7 +13,7 @@
       </transition-group>
 
       <transition name="popup" appear>
-        <div v-if="loading" class="flex flex-row gap-x-3 justify-start">
+        <div v-if="loading" class="flex flex-row gap-x-3 justify-start my-6">
           <div class="h-fit w-fit text-base font-semibold rounded-full py-1 px-[0.4rem] bg-white">🚀</div>
           <p class="">...</p>
         </div>
@@ -60,18 +60,22 @@
 .chat-leave-active {
   transition: all 0.3s ease-in-out;
 }
+
 .chat-enter-from {
   opacity: 0;
   transform: translateY(10px);
 }
+
 .chat-enter-to {
   opacity: 1;
   transform: translateY(0);
 }
+
 .chat-leave-from {
   opacity: 1;
   transform: translateY(0);
 }
+
 .chat-leave-to {
   opacity: 0;
   transform: translateY(-10px);
@@ -88,16 +92,28 @@ const chatContainer = ref<HTMLDivElement | null>(null);
 const tempMessage = ref("");
 const loading = ref(false);
 
+const scrollToBottom = () => {
+  if (chatContainer.value) {
+    chatContainer.value.scrollTo({
+      top: chatContainer.value.scrollHeight,
+      behavior: "smooth",
+    });
+  }
+};
+
 const sendMessage = () => {
   if (!tempMessage.value.trim()) {
     alert("Pesan tidak boleh kosong!");
     return;
+  } else {
+    tempMessage.value = "";
   }
 
   setTimeout(() => {
     loading.value = true;
-  }, 300);
-  
+    scrollToBottom();
+  }, 200);
+
   const newMessage = {
     message: tempMessage.value,
     direction: "out",
@@ -109,22 +125,18 @@ const sendMessage = () => {
   })
     .then((res) => {
       console.log("from view", res);
-      loading.value = false;
-      tempMessage.value = "";
+      setTimeout(() => {
+        loading.value = false;
+        scrollToBottom();
+      }, 600);
     })
     .catch((err) => {
       console.log("from view", err);
-      loading.value = false;
+      setTimeout(() => {
+        loading.value = false;
+        scrollToBottom();
+      }, 600);
     });
-};
-
-const scrollToBottom = () => {
-  if (chatContainer.value) {
-    chatContainer.value.scrollTo({
-      top: chatContainer.value.scrollHeight,
-      behavior: "smooth",
-    });
-  }
 };
 
 watch(

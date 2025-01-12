@@ -26,14 +26,6 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
             body: JSON.stringify(payload)
         })
 
-        if (!res.ok) {
-            addMessage({
-                direction: "out",
-                message: "maaf terjadi kesalahan saat memuat data..."
-            })
-            throw new Error(`HTTP error! status: ${res.status}`)
-        }
-
         const bodyResponse = await res.json() as IChatResponse
         addMessage({
             direction: "out",
@@ -42,10 +34,12 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
 
         return "success"
     } catch (error) {
-        addMessage({
-            direction: "out",
-            message: "maaf terjadi kesalahan saat memuat data..."
-        })
+        setTimeout(() => {
+            addMessage({
+                direction: "out",
+                message: "maaf terjadi kesalahan saat memuat data..."
+            })
+        }, 1000);
         throw new Error(`HTTP Error get response`)
     }
 }
