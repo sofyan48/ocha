@@ -37,13 +37,15 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
 
         return "success"
     } catch (error) {
-        setLoading(false)
         setTimeout(() => {
             addMessage({
                 direction: "out",
                 message: "maaf terjadi kesalahan saat memuat data..."
             })
-        }, 400);
+        }, 1300);
+        setTimeout(() => {
+            setLoading(false)
+        }, 800);
         throw new Error(`HTTP Error get response`)
     }
 }
