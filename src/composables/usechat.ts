@@ -5,13 +5,15 @@ export const useChat = () => {
     const chatStore = useChatStore();
 
     // State dan getter dari store
-    const { chats } = storeToRefs(chatStore);
+    const { chats, getLoading } = storeToRefs(chatStore);
 
     // Aksi dari store
-    const { addMessage } = chatStore;
+    const { addMessage, setLoading } = chatStore;
 
     return {
         chats,
-        addMessage
+        addMessage,
+        getLoading,
+        setLoading,
     };
 };

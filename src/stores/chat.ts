@@ -3,6 +3,7 @@ import type { IChat } from "@/interfaces/chatstore";
 
 interface IStore {
     chats: IChat[];
+    loading: boolean
 }
 
 export const useChatStore = defineStore('chatStore', {
@@ -13,6 +14,7 @@ export const useChatStore = defineStore('chatStore', {
     } as IStore),
     getters: {
         getChat: (state) => state.chats,
+        getLoading: (state) => state.loading
     },
     actions: {
         addMessage(newMessage: IChat) {
@@ -24,6 +26,9 @@ export const useChatStore = defineStore('chatStore', {
             const messageCopy = { ...newMessage };
             this.chats.push(messageCopy);
         },
+        setLoading(payload: boolean) {
+            this.loading = payload
+        }
     },
 });
 
