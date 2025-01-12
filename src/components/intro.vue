@@ -9,21 +9,4 @@
     </div>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import { useChat } from "../composables/usechat";
-import type { IChat } from "@/interfaces/chatstore";
-const { addMessage } = useChat();
-
-const tempMessage = ref("");
-
-const message: IChat = reactive({
-    message: "",
-    direction: "in",
-});
-
-const sendMessage = () => {
-    message.message = tempMessage.value;
-    addMessage(message);
-    tempMessage.value = "";
-};
 </script>
