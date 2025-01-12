@@ -8,8 +8,7 @@ interface IStore {
 export const useChatStore = defineStore('chatStore', {
     state: () => ({
         chats: [
-            { direction: 'in', message: 'Siapakah kamu?' },
-            { direction: 'out', message: 'Saya adalah asisten virtual berbasis AI yang dirancang untuk membantu dalam berbagai tugas, Saya belajar dari data dan dapat menyesuaikan jawaban saya dengan kebutuhan Anda. 😊' },
+            { direction: 'out', message: 'Halo kak, Saya adalah Ocha berbasis AI yang dirancang untuk membantu dalam berbagai tugas tentang om iank' },
         ],
     } as IStore),
     getters: {
@@ -18,7 +17,7 @@ export const useChatStore = defineStore('chatStore', {
     actions: {
         addMessage(newMessage: IChat) {
             if (!newMessage.message || !newMessage.direction) {
-                console.error("Pesan baru harus memiliki 'message' dan 'direction'.");
+                // console.error("Pesan baru harus memiliki 'message' dan 'direction'.");
                 return;
             }
             
