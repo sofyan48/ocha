@@ -30,7 +30,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
         const res = await fetch(url, {
             method: "POST",
             headers: {
-                "x-session": "67890",
+                "x-session": `${sessionFromCookie}`,
                 "Content-Type": "application/json",
                 Authorization: `Basic ${basicAuth}`,
             },
