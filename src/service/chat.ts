@@ -3,6 +3,16 @@ import type { IChatPayload, IChatResponse } from "@/entity/chat";
 import { useChat } from "@/composables/usechat";
 import cookie from "@/utils/cookie";
 
+const getCookieValue = (name: string): string | null => {
+    const cookies = document.cookie.split("; ");
+    const cookie = cookies.find((row) => row.startsWith(`${name}=`));
+    return cookie ? cookie.split("=")[1] : null;
+};
+
+const generateRandomSession = (): string => {
+    return crypto.randomUUID(); // Generate a unique UUID
+};
+
 const fetchMessage = async (payload: IChatPayload): Promise<string> => {
     const {addMessage, setLoading} = useChat()
 
@@ -10,7 +20,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
     const version   = "v1"
     const url       = `${config.baseUrl}/${version}/chat`
     const basicAuth = btoa(`${config.username}:${config.password}`);
-    
+
     try {
         addMessage({
             direction: "in",
