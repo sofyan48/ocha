@@ -9,4 +9,17 @@
     </div>
 </template>
 <script setup lang="ts">
+import cookie from "@/utils/cookie";
+import { onMounted } from "vue";
+import random from "@/utils/random_key";
+
+const {getCookie, setCookie} = cookie
+
+onMounted(() => {
+    const unique = getCookie('identity')
+    if (!unique) {
+        let key = random.generateUniqueValue()
+        setCookie('identity', key)
+    }
+})
 </script>

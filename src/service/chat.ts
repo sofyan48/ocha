@@ -1,6 +1,7 @@
 import {getconfig} from "@/config/config";
 import type { IChatPayload, IChatResponse } from "@/entity/chat";
 import { useChat } from "@/composables/usechat";
+import cookie from "@/utils/cookie";
 
 const fetchMessage = async (payload: IChatPayload): Promise<string> => {
     const {addMessage, setLoading} = useChat()
@@ -19,7 +20,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
         const res = await fetch(url, {
             method: "POST",
             headers: {
-                "x-session": "67890",
+                "x-session": cookie.getCookie("identity") ?? '4390',
                 "Content-Type": "application/json",
                 Authorization: `Basic ${basicAuth}`,
             },
