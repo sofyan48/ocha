@@ -3,7 +3,7 @@ import type { IChatPayload, IChatResponse } from "@/entity/chat";
 import { useChat } from "@/composables/usechat";
 
 const fetchMessage = async (payload: IChatPayload): Promise<string> => {
-    const {addMessage} = useChat()
+    const {addMessage, setLoading} = useChat()
 
     const config    = getconfig()
     const version   = "v1"
@@ -27,19 +27,23 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
         })
 
         const bodyResponse = await res.json() as IChatResponse
-        addMessage({
-            direction: "out",
-            message: bodyResponse.data.result
-        })
+        setLoading(false)
+        setTimeout(() => {
+            addMessage({
+                direction: "out",
+                message: bodyResponse.data.result
+            })
+        }, 400);
 
         return "success"
     } catch (error) {
+        setLoading(false)
         setTimeout(() => {
             addMessage({
                 direction: "out",
                 message: "maaf terjadi kesalahan saat memuat data..."
             })
-        }, 1000);
+        }, 400);
         throw new Error(`HTTP Error get response`)
     }
 }

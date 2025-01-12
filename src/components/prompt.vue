@@ -13,7 +13,7 @@
       </transition-group>
 
       <transition name="popup" appear>
-        <div v-if="loading" class="flex flex-row gap-x-3 justify-start my-6">
+        <div v-if="getLoading" class="flex flex-row gap-x-3 justify-start my-6">
           <div class="h-fit w-fit text-base font-semibold rounded-full py-1 px-[0.4rem] bg-white">🚀</div>
           <p class="">...</p>
         </div>
@@ -87,10 +87,9 @@ import { reactive, ref, onMounted, watch, nextTick } from "vue";
 import { useChat } from "../composables/usechat";
 import chat from "@/service/chat";
 
-const { chats } = useChat();
+const { chats, getLoading, setLoading } = useChat();
 const chatContainer = ref<HTMLDivElement | null>(null);
 const tempMessage = ref("");
-const loading = ref(false);
 
 const scrollToBottom = () => {
   if (chatContainer.value) {
@@ -102,41 +101,31 @@ const scrollToBottom = () => {
 };
 
 const sendMessage = () => {
-  if (!tempMessage.value.trim()) {
+  if (!tempMessage.value) {
     alert("Pesan tidak boleh kosong!");
     return;
-  } else {
-    tempMessage.value = "";
   }
 
   setTimeout(() => {
-    loading.value = true;
+    setLoading(true)
+  }, 400);
+  
+  setTimeout(() => {
     scrollToBottom();
-  }, 200);
-
-  const newMessage = {
-    message: tempMessage.value,
-    direction: "out",
-  };
+  }, 600);
 
   chat.fetchMessage({
-    chat: newMessage.message,
+    chat: tempMessage.value,
     collection: "ocha_v2",
   })
     .then((res) => {
       console.log("from view", res);
-      setTimeout(() => {
-        loading.value = false;
-        scrollToBottom();
-      }, 600);
     })
     .catch((err) => {
       console.log("from view", err);
-      setTimeout(() => {
-        loading.value = false;
-        scrollToBottom();
-      }, 600);
     });
+
+  tempMessage.value = "";
 };
 
 watch(
