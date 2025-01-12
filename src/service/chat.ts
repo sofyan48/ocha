@@ -1,6 +1,7 @@
 import {getconfig} from "@/config/config";
 import type { IChatPayload, IChatResponse } from "@/entity/chat";
 import { useChat } from "@/composables/usechat";
+import cookie from "@/utils/cookie";
 
 const getCookieValue = (name: string): string | null => {
     const cookies = document.cookie.split("; ");
@@ -19,8 +20,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
     const version   = "v1"
     const url       = `${config.baseUrl}/${version}/chat`
     const basicAuth = btoa(`${config.username}:${config.password}`);
-    const sessionFromCookie = getCookieValue("x-session") || generateRandomSession(); // Fallback to default
-    
+
     try {
         addMessage({
             direction: "in",
@@ -30,7 +30,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
         const res = await fetch(url, {
             method: "POST",
             headers: {
-                "x-session": `${sessionFromCookie}`,
+                "x-session": cookie.getCookie("identity") ?? '4390',
                 "Content-Type": "application/json",
                 Authorization: `Basic ${basicAuth}`,
             },
