@@ -126,7 +126,7 @@ const sendMessage = () => {
 
   chat.fetchMessage({
     chat: tempMessage.value,
-    collection: "ocha_v2",
+    collection: "ocha_v1",
   })
     .then((res) => {
       console.log("from view", res);
