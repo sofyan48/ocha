@@ -1,17 +1,7 @@
 import {getconfig} from "@/config/config";
-import type { IChatPayload, IChatResponse } from "@/entity/chat";
+import type { IChatHistoryResponse, IChatPayload, IChatResponse } from "@/entity/chat";
 import { useChat } from "@/composables/usechat";
 import cookie from "@/utils/cookie";
-
-const getCookieValue = (name: string): string | null => {
-    const cookies = document.cookie.split("; ");
-    const cookie = cookies.find((row) => row.startsWith(`${name}=`));
-    return cookie ? cookie.split("=")[1] : null;
-};
-
-const generateRandomSession = (): string => {
-    return crypto.randomUUID(); // Generate a unique UUID
-};
 
 const fetchMessage = async (payload: IChatPayload): Promise<string> => {
     const {addMessage, setLoading} = useChat()
@@ -23,7 +13,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
 
     try {
         addMessage({
-            direction: "in",
+            direction: "out",
             message: payload.chat
         })
 
@@ -41,7 +31,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
         setLoading(false)
         setTimeout(() => {
             addMessage({
-                direction: "out",
+                direction: "in",
                 message: bodyResponse.data.result
             })
         }, 400);
@@ -50,7 +40,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
     } catch (error) {
         setTimeout(() => {
             addMessage({
-                direction: "out",
+                direction: "in",
                 message: "maaf terjadi kesalahan saat memuat data..."
             })
         }, 1300);
@@ -61,6 +51,43 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
     }
 }
 
+const fetchHistory = async (): Promise<string> => {
+    const {addMessage} = useChat()
+    const config    = getconfig()
+    const version   = "v1"
+    const url       = `${config.baseUrl}/${version}/chat/history`
+    const basicAuth = btoa(`${config.username}:${config.password}`);
+
+    try {
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                "x-session": cookie.getCookie("identity") ?? '4390',
+                "Content-Type": "application/json",
+                Authorization: `Basic ${basicAuth}`,
+            },
+        })
+
+        const bodyResponse = await res.json() as IChatHistoryResponse
+        setTimeout(() => {
+            const data = bodyResponse.data.chat
+            for (let index = 0; index < data.length; index++) {
+                console.log({ ai: "out", human: "in" }[data[index].type]);
+                
+                addMessage({
+                    direction: { ai: "in", human: "out" }[data[index].type] || "unknown",
+                    message: data[index].content
+                })
+            }
+        }, 400);
+
+        return "success"
+    } catch (error) {
+        throw new Error(`HTTP Error get response`)
+    }
+}
+
 export default {
-    fetchMessage
+    fetchMessage,
+    fetchHistory
 }

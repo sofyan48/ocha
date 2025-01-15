@@ -10,8 +10,9 @@
 </template>
 <script setup lang="ts">
 import cookie from "@/utils/cookie";
-import { onMounted } from "vue";
+import { onBeforeMount, onMounted } from "vue";
 import random from "@/utils/random_key";
+import chat from "@/service/chat";
 
 const {getCookie, setCookie} = cookie
 
@@ -21,5 +22,9 @@ onMounted(() => {
         let key = random.generateUniqueValue()
         setCookie('identity', key)
     }
+})
+
+onBeforeMount(() => {
+    chat.fetchHistory()
 })
 </script>

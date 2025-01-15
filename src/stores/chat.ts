@@ -9,7 +9,7 @@ interface IStore {
 export const useChatStore = defineStore('chatStore', {
     state: () => ({
         chats: [
-            { direction: 'out', message: 'Halo kak, Saya adalah Ocha berbasis AI yang dirancang untuk membantu dalam berbagai tugas tentang om iank' },
+            { direction: 'in', message: 'Halo kak, Saya adalah Ocha berbasis AI yang dirancang untuk membantu dalam berbagai tugas tentang om iank' },
         ],
     } as IStore),
     getters: {
@@ -19,7 +19,6 @@ export const useChatStore = defineStore('chatStore', {
     actions: {
         addMessage(newMessage: IChat) {
             if (!newMessage.message || !newMessage.direction) {
-                // console.error("Pesan baru harus memiliki 'message' dan 'direction'.");
                 return;
             }
             
