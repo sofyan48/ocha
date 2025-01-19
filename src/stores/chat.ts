@@ -9,7 +9,7 @@ interface IStore {
 export const useChatStore = defineStore('chatStore', {
     state: () => ({
         chats: [
-            { direction: 'in', message: 'Halo kak, Saya adalah Ocha berbasis AI yang dirancang untuk membantu dalam berbagai tugas tentang om iank' },
+            { direction: 'in', message: 'Halo kak, Saya adalah Cinbot berbasis AI yang dirancang untuk membantu dalam berbagai tugas tentang om iank' },
         ],
     } as IStore),
     getters: {
