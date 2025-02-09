@@ -9,7 +9,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
     const config    = getconfig()
     const version   = "v1"
     const url       = `${config.baseUrl}/${version}/chat`
-    const basicAuth = btoa(`${config.username}:${config.password}`);
+    const bearer = `${config.bearer}`;
 
     try {
         addMessage({
@@ -22,7 +22,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
             headers: {
                 "x-session": cookie.getCookie("identity") ?? '4390',
                 "Content-Type": "application/json",
-                Authorization: `Basic ${basicAuth}`,
+                Authorization: `Bearer ${bearer}`,
             },
             body: JSON.stringify(payload)
         })
@@ -56,7 +56,7 @@ const fetchHistory = async (): Promise<string> => {
     const config    = getconfig()
     const version   = "v1"
     const url       = `${config.baseUrl}/${version}/chat/history`
-    const basicAuth = btoa(`${config.username}:${config.password}`);
+    const bearer = `${config.bearer}`;
 
     try {
         const res = await fetch(url, {
@@ -64,7 +64,7 @@ const fetchHistory = async (): Promise<string> => {
             headers: {
                 "x-session": cookie.getCookie("identity") ?? '4390',
                 "Content-Type": "application/json",
-                Authorization: `Basic ${basicAuth}`,
+                Authorization: `Bearer ${bearer}`,
             },
         })
 
