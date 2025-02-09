@@ -55,7 +55,7 @@ const fetchHistory = async (): Promise<string> => {
     const {addMessage} = useChat()
     const config    = getconfig()
     const version   = "v1"
-    const url       = `${config.baseUrl}/${version}/chat/history`
+    const url       = `${config.baseUrl}/${version}/chat`
     const bearer = `${config.bearer}`;
 
     try {
