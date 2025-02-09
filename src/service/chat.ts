@@ -22,7 +22,7 @@ const fetchMessage = async (payload: IChatPayload): Promise<string> => {
             headers: {
                 "x-session": cookie.getCookie("identity") ?? '4390',
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${bearer}`,
+                Authorization: `Bearer Bearer ${bearer}`,
             },
             body: JSON.stringify(payload)
         })
@@ -64,7 +64,7 @@ const fetchHistory = async (): Promise<string> => {
             headers: {
                 "x-session": cookie.getCookie("identity") ?? '4390',
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${bearer}`,
+                Authorization: `Bearer Bearer ${bearer}`,
             },
         })
 
